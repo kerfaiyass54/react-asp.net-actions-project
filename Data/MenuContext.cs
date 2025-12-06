@@ -5,36 +5,39 @@ namespace food_menu.Data
 {
     public class MenuContext : DbContext
     {
-        public MenuContext(DbContextOptions<MenuContext> options) : base(options) 
-        {
-
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DishIngredient>().HasKey(di => new
-            {
-                di.DishId,
-                di.IngredientId
-            });
-            modelBuilder.Entity<DishIngredient>().HasOne(d => d.Dish).WithMany(di => di.DishIngredients).HasForeignKey(d => d.DishId);
-            modelBuilder.Entity<DishIngredient>().HasOne(d => d.Ingredient).WithMany(di => di.DishIngredients).HasForeignKey(i => i.IngredientId);
-            modelBuilder.Entity<Dish>().HasData(
-                new Dish { Id=1 , Name="Margheritta", Price=7.50}
-                );
-            modelBuilder.Entity<Ingredient>().HasData(
-                new Ingredient { Id=1, Name="Sauce" },
-                new Ingredient { Id=2, Name="Mozarella" }
-                );
-            modelBuilder.Entity<DishIngredient>().HasData(
-                new DishIngredient { DishId = 1, IngredientId = 1 },
-                new DishIngredient { DishId = 2, IngredientId = 2 }
-                );
-            base.OnModelCreating(modelBuilder);
-        }
+        public MenuContext(DbContextOptions<MenuContext> options) : base(options) { }
 
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Map tables
+            modelBuilder.Entity<Dish>().ToTable("dish");
+            modelBuilder.Entity<Dish>().Property(d => d.Id).HasColumnName("id");
+            modelBuilder.Entity<Dish>().Property(d => d.Name).HasColumnName("name");
+            modelBuilder.Entity<Dish>().Property(d => d.Price).HasColumnName("price");
+
+            modelBuilder.Entity<Ingredient>().ToTable("ingredient");
+            modelBuilder.Entity<Ingredient>().Property(i => i.Id).HasColumnName("id");
+            modelBuilder.Entity<Ingredient>().Property(i => i.Name).HasColumnName("name");
+
+            modelBuilder.Entity<DishIngredient>().ToTable("dish_ingredient");
+            modelBuilder.Entity<DishIngredient>().HasKey(di => new { di.DishId, di.IngredientId });
+            modelBuilder.Entity<DishIngredient>().Property(di => di.DishId).HasColumnName("dish_id");
+            modelBuilder.Entity<DishIngredient>().Property(di => di.IngredientId).HasColumnName("ingredient_id");
+
+            // Relationships
+            modelBuilder.Entity<DishIngredient>()
+                .HasOne(di => di.Dish)
+                .WithMany(d => d.DishIngredients)
+                .HasForeignKey(di => di.DishId);
+
+            modelBuilder.Entity<DishIngredient>()
+                .HasOne(di => di.Ingredient)
+                .WithMany(i => i.DishIngredients)
+                .HasForeignKey(di => di.IngredientId);
+        }
     }
 }

@@ -1,38 +1,31 @@
-using Npgsql;
+using food_menu.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// MVC
 builder.Services.AddControllersWithViews();
+
+// PostgreSQL EF Core
+builder.Services.AddDbContext<MenuContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Example: Query PostgreSQL using Npgsql
-string connString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-using (var conn = new NpgsqlConnection(connString))
+// Middleware
+if (!app.Environment.IsDevelopment())
 {
-    conn.Open();
-    Console.WriteLine("Connected to PostgreSQL successfully!");
-
-    // Example query
-    using var cmd = new NpgsqlCommand("SELECT id, name, price FROM dish;", conn);
-    using var reader = cmd.ExecuteReader();
-    while (reader.Read())
-    {
-        Console.WriteLine($"Dish: {reader.GetInt64(0)} - {reader.GetString(1)} - {reader.GetDouble(2)}");
-    }
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Menu}/{action=Index}/{id?}");
 
 app.Run();
