@@ -21,5 +21,12 @@ namespace food_menu.Data
             modelBuilder.Entity<DishIngredient>().HasOne(d => d.Ingredient).WithMany(di => di.DishIngredients).HasForeignKey(i => i.IngredientId);
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<Dish> Dishes
+            { get; set; }
+
+        public DbSet<Ingredient> Ingredients { get; set; }
+
+        public DbSet<DishIngredient> DishIngredients { get; set; }
     }
 }
