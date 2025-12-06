@@ -1,0 +1,10 @@
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.csproj.AssemblyReference.cache
+D:\projects\food-menu\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.GeneratedMSBuildEditorConfig.editorconfig
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.AssemblyInfoInputs.cache
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.AssemblyInfo.cs
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.csproj.CoreCompileInputs.cache
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.MvcApplicationPartsAssemblyInfo.cache
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.RazorAssemblyInfo.cache
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.RazorAssemblyInfo.cs
+D:\projects\food-menu\obj\Debug\net8.0\food-menu.sourcelink.json
